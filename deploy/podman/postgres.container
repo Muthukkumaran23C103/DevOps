@@ -1,0 +1,26 @@
+[Unit]
+Description=PostgreSQL Database Container (Catalog + App Schemas)
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=docker.io/library/postgres:16-alpine
+ContainerName=musicdb-postgres
+Environment=POSTGRES_DB=musicdb
+Environment=POSTGRES_USER=musicdb_app
+Environment=POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+PublishPort=127.0.0.1:5432:5432
+Volume=/var/lib/musicdb/pgdata:/var/lib/postgresql/data:Z
+Volume=%h/deploy/podman/postgresql.conf:/etc/postgresql/postgresql.conf:ro,Z
+Exec=postgres -c config_file=/etc/postgresql/postgresql.conf
+
+# Hardware limits to safeguard host RAM (4.4 GiB max)
+Memory=2048M
+MemorySwap=2560M
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target default.target
