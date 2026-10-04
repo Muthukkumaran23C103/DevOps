@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rate Your Music (RYM) Engine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .star-btn { cursor: pointer; transition: transform 0.1s ease; }
+    .star-btn:hover { transform: scale(1.2); }
+    .nav-link.active {
+      color: #3b82f6;
+      border-bottom: 2px solid #3b82f6;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased p-2 sm:p-6 min-h-screen">
+
+  <!-- RYM Application Shell -->
+  <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl max-w-5xl mx-auto overflow-hidden">
+    
+    <!-- RYM Header Bar -->
+    <header class="bg-slate-950 border-b border-slate-800 px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-black text-base flex items-center justify-center shadow-lg">
+            RYM
+          </div>
+          <span class="font-bold text-lg tracking-tight text-white">Rate Your Music</span>
+        </div>
+        
+        <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Engine Live :8080
+        </span>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-xs relative">
+        <input type="text" id="global-search" placeholder="Search artists, albums, tracks, scripts..." 
+               class="w-full px-3.5 py-1.5 text-xs bg-slate-900 border border-slate-800 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+      </div>
+
+      <!-- User Avatar / Profile -->
+      <div class="flex items-center gap-2 text-xs">
+        <div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow">
+          CE
+        </div>
+        <span class="font-medium text-slate-300 hidden sm:inline">CrateExplorer</span>
+      </div>
+    </header>
+
+    <!-- Sub-navigation Bar -->
+    <div class="bg-slate-950/50 border-b border-slate-800 px-4 flex space-x-6 text-xs overflow-x-auto">
+      <button onclick="nav('release')" id="nav-release" class="nav-link active py-3 transition">Release Page</button>
+      <button onclick="nav('artist')" id="nav-artist" class="nav-link py-3 transition">Artist Discography</button>
+      <button onclick="nav('charts')" id="nav-charts" class="nav-link py-3 transition">Top Charts</button>
+      <button onclick="nav('lists')" id="nav-lists" class="nav-link py-3 transition">Custom Lists</button>
+    </div>
+
+    <!-- MAIN CONTENT VIEW CONTAINER -->
+    <main class="p-4 sm:p-6 space-y-6">
+
+      <!-- RELEASE PAGE VIEW -->
+      <div id="view-release" class="space-y-6">
+        
+        <!-- Album Main Header Section -->
+        <div class="flex flex-col md:flex-row gap-6 items-start">
+          
+          <!-- Album Cover Art Image -->
+          <div class="w-48 sm:w-56 flex-shrink-0 mx-auto md:mx-0">
+            <div class="aspect-square rounded-2xl overflow-hidden border border-slate-800 shadow-xl bg-slate-950 relative group">
+              <img id="rel-cover" src="https://upload.wikimedia.org/wikipedia/en/8/87/Nayakan_poster.jpg" 
+                   alt="Album Cover" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              <div class="absolute bottom-2 right-2 px-2 py-0.5 bg-black/80 backdrop-blur text-white text-[10px] rounded font-medium">
+                1987 Soundtrack
+              </div>
+            </div>
+          </div>
+
+          <!-- Album Meta Info -->
+          <div class="flex-1 space-y-3 w-full">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 id="rel-title" class="text-2xl font-black text-white tracking-tight">Nayakan</h2>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-medium">Film Soundtrack</span>
+              </div>
+              
+              <p class="text-xs text-slate-400 mt-1">
+                Native Titles: <span class="font-serif text-slate-200">நாயகன்</span> (Tamil) • <span class="font-serif text-slate-200">नायगन</span> (Devanagari)
+              </p>
+            </div>
+
+            <!-- Artist Header Line with Artist Photo -->
+            <div class="flex items-center gap-3 p-3 bg-slate-950 border border-slate-800 rounded-xl">
+              <img id="artist-thumb" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Ilaiyaraaja_at_an_event.jpg/440px-Ilaiyaraaja_at_an_event.jpg" 
+                   alt="Artist" class="w-11 h-11 rounded-full object-cover border border-slate-700 shadow">
+              <div>
+                <div class="text-[11px] text-slate-400">Composer & Music Director</div>
+                <button onclick="nav('artist')" class="text-sm font-bold text-blue-400 hover:underline">Ilaiyaraaja</button>
+                <span class="text-[10px] text-slate-400 ml-1 font-serif">(இளையராஜா)</span>
+              </div>
+            </div>
+
+            <!-- Genres & Descriptors -->
+            <div class="space-y-2 text-xs">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="font-semibold text-slate-400">Primary Genres:</span>
+                <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400 rounded font-medium">Tamil Film Music</span>
+                <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 rounded font-medium">Orchestral Folk</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="font-semibold text-slate-400">Secondary Genres:</span>
+                <span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded font-medium">Carnatic Fusion</span>
+                <span class="px-2 py-0.5 bg-teal-500/10 text-teal-400 rounded font-medium">Chamber Pop</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                <span class="font-semibold text-slate-400">Descriptors:</span>
+                <span class="px-2.5 py-0.5 bg-slate-950 border border-slate-800 rounded-full text-slate-400 italic">melancholic</span>
+                <span class="px-2.5 py-0.5 bg-slate-950 border border-slate-800 rounded-full text-slate-400 italic">cinematic</span>
+                <span class="px-2.5 py-0.5 bg-slate-950 border border-slate-800 rounded-full text-slate-400 italic">poetic</span>
+                <span class="px-2.5 py-0.5 bg-slate-950 border border-slate-800 rounded-full text-slate-400 italic">orchestral</span>
+                <span class="px-2.5 py-0.5 bg-slate-950 border border-slate-800 rounded-full text-slate-400 italic">nostalgic</span>
+              </div>
+            </div>
+
+            <!-- Rating Stats Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 border-t border-slate-800">
+              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">RYM Rating</div>
+                <div id="stat-avg" class="text-xl font-black text-amber-400">4.62</div>
+                <div class="text-[10px] text-slate-500">out of 5.0</div>
+              </div>
+
+              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Bayesian Score</div>
+                <div id="stat-bayesian" class="text-xl font-black text-indigo-400">4.58</div>
+                <div class="text-[10px] text-slate-500">Weighted Average</div>
+              </div>
+
+              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Total Ratings</div>
+                <div id="stat-ratings" class="text-xl font-black text-white">1,420</div>
+                <div class="text-[10px] text-slate-500">Users</div>
+              </div>
+
+              <div class="p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">All-Time Rank</div>
+                <div class="text-xl font-black text-emerald-400">#1</div>
+                <div class="text-[10px] text-slate-500">Indian Film Score</div>
+              </div>
+            </div>
+
+            <!-- Interactive 0.5 to 5.0 Star Rating Input Bar -->
+            <div class="p-3.5 bg-gradient-to-r from-amber-500/10 to-indigo-500/10 border border-amber-500/30 rounded-xl flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <span class="text-xs font-bold text-white">Rate this Release:</span>
+                <span id="user-rating-val" class="text-xs text-amber-400 font-semibold ml-2">Click stars to rate</span>
+              </div>
+              <div class="flex items-center gap-1.5" id="star-container"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Tracklist Section -->
+        <div class="space-y-3 pt-4 border-t border-slate-800">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Tracklist & Per-Track Ratings</h3>
+            <span class="text-xs text-slate-400">4 Tracks • 18:53 Total Time</span>
+          </div>
+
+          <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-950 text-xs">
+            <table class="w-full text-left">
+              <thead class="bg-slate-900 border-b border-slate-800 text-slate-400 font-semibold">
+                <tr>
+                  <th class="p-3 w-8">#</th>
+                  <th class="p-3">Track Title</th>
+                  <th class="p-3">Performers / Vocalists</th>
+                  <th class="p-3">Ragam</th>
+                  <th class="p-3 w-16">Time</th>
+                  <th class="p-3 w-28 text-right">Avg Rating</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800">
+                <tr class="hover:bg-slate-900/50 transition">
+                  <td class="p-3 font-bold text-slate-500">1</td>
+                  <td class="p-3 font-bold text-white">Thenpandi Cheemayile</td>
+                  <td class="p-3 text-slate-400">Ilaiyaraaja, Kamal Haasan</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 font-semibold">Mayamalavagowla</span></td>
+                  <td class="p-3 font-mono text-slate-400">4:32</td>
+                  <td class="p-3 text-right font-bold text-amber-400">★ 4.85</td>
+                </tr>
+                <tr class="hover:bg-slate-900/50 transition">
+                  <td class="p-3 font-bold text-slate-500">2</td>
+                  <td class="p-3 font-bold text-white">Nee Oru Kaadhal Sangeetham</td>
+                  <td class="p-3 text-slate-400">K.J. Yesudas, Chithra</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-semibold">Abheri</span></td>
+                  <td class="p-3 font-mono text-slate-400">4:48</td>
+                  <td class="p-3 text-right font-bold text-amber-400">★ 4.90</td>
+                </tr>
+                <tr class="hover:bg-slate-900/50 transition">
+                  <td class="p-3 font-bold text-slate-500">3</td>
+                  <td class="p-3 font-bold text-white">Naan Sirithal Deepavali</td>
+                  <td class="p-3 text-slate-400">M.S. Rajeswari, Jamuna Rani</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 font-semibold">Bhairavi</span></td>
+                  <td class="p-3 font-mono text-slate-400">4:55</td>
+                  <td class="p-3 text-right font-bold text-amber-400">★ 4.70</td>
+                </tr>
+                <tr class="hover:bg-slate-900/50 transition">
+                  <td class="p-3 font-bold text-slate-500">4</td>
+                  <td class="p-3 font-bold text-white">Andhi Mazhai Megam</td>
+                  <td class="p-3 text-slate-400">T.L. Maharajan, P. Susheela</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold">Kalyani</span></td>
+                  <td class="p-3 font-mono text-slate-400">4:38</td>
+                  <td class="p-3 text-right font-bold text-amber-400">★ 4.75</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ARTIST DISCOGRAPHY VIEW -->
+      <div id="view-artist" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 p-5 bg-slate-950 border border-slate-800 rounded-2xl">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Ilaiyaraaja_at_an_event.jpg/440px-Ilaiyaraaja_at_an_event.jpg" 
+               alt="Ilaiyaraaja" class="w-32 h-32 rounded-xl object-cover border border-slate-700 shadow-lg">
+          <div class="space-y-2 text-center sm:text-left">
+            <h2 class="text-3xl font-black text-white">Ilaiyaraaja</h2>
+            <div class="text-xs text-slate-400 font-serif">
+              இளையராஜா (Tamil) • इलैयाराजा (Devanagari) • ఇళయరాజా (Telugu)
+            </div>
+            <p class="text-xs text-slate-400 max-w-2xl leading-relaxed">
+              Ilaiyaraaja is an Indian film composer, conductor, arranger, lyricist, and singer who has composed over 7,000 songs and film scores for over 1,400 films across 5 decades.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOP CHARTS VIEW -->
+      <div id="view-charts" class="hidden space-y-4">
+        <h3 class="text-base font-bold text-white uppercase tracking-wider">Top Rated Releases of All Time</h3>
+        <div id="charts-container" class="space-y-3"></div>
+      </div>
+
+      <!-- CUSTOM LISTS VIEW -->
+      <div id="view-lists" class="hidden space-y-4">
+        <h3 class="text-base font-bold text-white uppercase tracking-wider">Featured Custom Lists</h3>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    let userRating = 0;
+
+    function nav(viewId) {
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      document.getElementById('nav-' + viewId).classList.add('active');
+
+      document.querySelectorAll('#view-release, #view-artist, #view-charts, #view-lists').forEach(v => v.classList.add('hidden'));
+      document.getElementById('view-' + viewId).classList.remove('hidden');
+    }
+
+    function initStars() {
+      const container = document.getElementById('star-container');
+      container.innerHTML = '';
+      for (let i = 0.5; i <= 5.0; i += 0.5) {
+        const star = document.createElement('button');
+        star.className = 'star-btn text-base font-mono text-slate-400 hover:text-amber-400';
+        star.innerText = i % 1 === 0 ? '★' : '½';
+        star.onclick = () => selectRating(i);
+        container.appendChild(star);
+      }
+    }
+
+    async function selectRating(val) {
+      userRating = val;
+      document.getElementById('user-rating-val').innerText = `Your Rating: ${val.toFixed(1)} Stars`;
+      try {
+        const resp = await fetch('http://localhost:8080/api/v1/ratings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ entity_id: 'rel-nayakan', rating: val })
+        });
+        const data = await resp.json();
+        if (data.status === 'success') {
+          document.getElementById('stat-avg').innerText = data.average_rating.toFixed(2);
+          document.getElementById('stat-ratings').innerText = data.total_ratings.toLocaleString();
+        }
+      } catch (e) {}
+    }
+
+    initStars();
+  </script>
+</body>
+</html>
